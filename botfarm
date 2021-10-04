@@ -1,0 +1,36 @@
+local c = 0.35
+
+-- autofarm toggle
+_G.Continue = true
+
+-- functions
+
+local s = 0
+function start()
+game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+for i,v in pairs(game.Workspace.obby.Badge:GetChildren()) do
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+    for i,v in pairs(v:GetChildren()) do
+        if _G.Continue == false then return end
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = v.Part.CFrame
+    end
+    s = s + 1
+    wait(0.15)
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = true
+    wait(c)
+end
+end
+
+-- main
+start()
+if not _G.Continue then
+    print("farm off")
+    game.Players.LocalPlayer.Character.HumanoidRootPart.Anchored = false
+else
+    print("farm on")
+end
+while _G.Continue do
+    wait(5)
+    print("resuming farm")
+    start()
+end
