@@ -39,7 +39,7 @@ local function replaceIndex()
     word = string.split(_G.word," ")
     local str = ""
     notification("Hashing Text")
-    for i,v in pairs(_G.word) do
+    for i,v in pairs(word) do
         local replaced = false
         local new = ""
         local sexyString = string.split(v,"")
