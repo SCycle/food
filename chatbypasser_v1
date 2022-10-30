@@ -1,1 +1,79 @@
+local index = {
+    ["o"] = "ο",
+    ["i"] = "ι",
+    ["e"] = "ε",
+    ["u"] = "υ",
+    ["a"] = "α",
+    ["k"] = "κ",
+    ["c"] = "с",
+}
 
+local function notification(txt)
+    game.StarterGui:SetCore("SendNotification", {
+        Title = "Chat Service",
+        Text = txt,
+        Icon = nil,
+        Duration = 2.45,
+        Callback = nil
+      }
+    )
+end
+
+local token = game:GetService("ReplicatedStorage").DefaultChatSystemChatEvents.SayMessageRequest
+
+local function getMessageID()
+    notification("Claiming Message ID")
+    if _G.privMessaging ~= nil then
+        if game.Players:FindFirstChild(_G.privMessaging) then
+            return "To ".._G.privMessaging
+        else
+            privMessaging = nil
+            return getMessageID()
+        end
+    else
+        return "All"  
+    end
+end
+
+local function replaceIndex()
+    word = string.split(_G.word," ")
+    local str = ""
+    notification("Hashing Text")
+    for i,v in pairs(_G.word) do
+        local replaced = false
+        local new = ""
+        local sexyString = string.split(v,"")
+        for o,letter in pairs(sexyString) do
+            if not replaced then
+                letter = string.lower(letter)
+                if letter == "l" then letter = "i" end
+                if index[letter] then
+                    local c = false
+                    if letter == "i" then if not sexyString[o-1] and not sexyString[o+1] then c = true end end
+                    if sexyString[o+1] == "s" and sexyString[o+2] == "s" and sexyString[o+3] == "h" then c = true end
+                    if not c then
+                        warn("Replacing "..letter.." with '"..index[letter].."'".." | "..o)
+                        letter = index[letter]
+                        if sexyString[o+1] == "s" and sexyString[o+2] == "s" and not sexyString[o+3] == "h" then letter = letter.." ξ " sexyString[o+2] = " s" end
+                        if sexyString[o+1] == "l" and sexyString[o+2] == "l" and sexyString[o-1] then letter = letter.."ς " sexyString[o+2] = "l" end
+                        if sexyString[o-1] == "f" and sexyString[o+1] == "c" and sexyString[o+2] == "k" then letter = index["u"].." ς " sexyString[o+1] = "c"..index["k"] sexyString[o+2] = "l"  end
+                        if sexyString[o+1] == "g" and sexyString[o+2] == "g" then letter = letter.." ξ " sexyString[o+2] = "g" end
+                        if sexyString[o+1] == "n" and sexyString[o+2] == "i" and sexyString[o+3] == "s" then letter = letter.." ξ " sexyString[o+3] = " s" end
+                        if sexyString[o-1] == "d" and sexyString[o+1] == "c" and sexyString[o+2] == "k" then letter = letter.." ς " sexyString[o+2] = " k" end
+                        if sexyString[o-1] == "c" and sexyString[o+1] == "m" then letter = letter.."ς " sexyString[o+1] = "^m" end
+                        replaced = true
+                    end
+                end
+            end
+            new = new..letter
+        end
+        str = str.." "..new
+    end
+    notification("Decoding Text")
+    task.wait(2)
+    return str.." [clk]"
+end
+
+notification("Calling Token")
+token:FireServer(replaceIndex(),getMessageID())
+notification("Sent Message")
