@@ -39,7 +39,6 @@ local function replaceIndex()
     word = string.split(_G.word," ")
     local str = ""
     notification("Hashing Text")
-    warn(word)
     for i,v in pairs(word) do
         local replaced = false
         local new = ""
