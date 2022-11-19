@@ -1,29 +1,58 @@
-local Info = TweenInfo.new(0.5)
+local msg = nil
 
-function tweenToTool(tool)
-    
-    local orPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
-    local toTool = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart,Info,{Position=tool:FindFirstChild("Handle").Position})
-    toTool:Play()
-    toTool.Completed:Connect(function()
-        local toOriginal = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart,Info,{Position=orPos})
-        toOriginal:Play()
-    end)
+function clearAllMessages(msg)
+    for i,v in pairs(game.Workspace:GetChildren()) do
+        if v.Name == "Message" and v ~= msg then
+            v:Destroy()
+        end
+    end
+    for i,v in pairs(game.Players.LocalPlayer:GetChildren()) do
+        if v.Name == "Message" and v ~= msg then
+            v:Destroy()
+        end
+    end
+end
+
+local started = false
+
+function start()
+    msg = Instance.new("Message")
+    msg.Parent = workspace
+    msg.Text = "Clearing Messages.."
+    clearAllMessages(msg)
+    msg.Text = "Clearing Index.."
+    wait(1)
+    clearAllMessages(msg)
+    msg.Text = "Cleared Index"
+    wait(1)
+    msg.Text = ""
+    started = true
+end
+
+function exec(tool)
+    if not started then print("ignored "..tool.Name.." while loading toolFinder") return end
+    msg.Parent = workspace
+    msg.Text = "A Tool Has Been Added Into Workspace: "..tool.Name
+    if _G.grab then
+        tool:FindFirstChild("Handle").CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame
+    end
+    print("tool found: "..tool.Name)
+    wait(3)
+    if msg.Text == "A Tool Has Been Added Into Workspace: "..tool.Name then
+        msg.Text = ""
+    end
+end
+
+start()
+
+for i,v in pairs(game.Workspace:GetChildren()) do
+    if v:IsA("Tool") then
+        exec(v)
+    end
 end
 
 game.Workspace.ChildAdded:Connect(function(obj)
     if obj:IsA("Tool") then
-        tweenToTool(obj)
+        exec(obj)
     end
 end)
-
-local toolsFound = 0
-for i,v in pairs(game.Workspace:GetChildren()) do
-    if v:IsA("Tool") then
-        toolsFound = toolsFound + 1
-        tweenToTool(obj)
-    end
-end
-print("Found "..toolsFound.." tools, all tools have been grabbed.")
-
-print("TOOL GRABBER | Made by cloaked#0001")
