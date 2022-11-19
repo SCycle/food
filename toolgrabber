@@ -1,0 +1,29 @@
+local Info = TweenInfo.new(0.5)
+
+function tweenToTool(tool)
+    
+    local orPos = game.Players.LocalPlayer.Character.HumanoidRootPart.Position
+    local toTool = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart,Info,{Position=tool:FindFirstChild("Handle").Position})
+    toTool:Play()
+    toTool.Completed:Connect(function()
+        local toOriginal = game:GetService("TweenService"):Create(game.Players.LocalPlayer.Character.HumanoidRootPart,Info,{Position=orPos})
+        toOriginal:Play()
+    end)
+end
+
+game.Workspace.ChildAdded:Connect(function(obj)
+    if obj:IsA("Tool") then
+        tweenToTool(obj)
+    end
+end)
+
+local toolsFound = 0
+for i,v in pairs(game.Workspace:GetChildren()) do
+    if v:IsA("Tool") then
+        toolsFound = toolsFound + 1
+        tweenToTool(obj)
+    end
+end
+print("Found "..toolsFound.." tools, all tools have been grabbed.")
+
+print("TOOL GRABBER | Made by cloaked#0001")
