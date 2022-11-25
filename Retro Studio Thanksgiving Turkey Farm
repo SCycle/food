@@ -1,0 +1,29 @@
+function spawnback()
+    game.Players.LocalPlayer.Character.Torso.CFrame = CFrame.new(-153.396072, 6.99999857, 185.446884, -0.983838558, -7.58641434e-08, -0.179057926, -6.286907e-08, 1, -7.82491583e-08, 0.179057926, -6.57273276e-08, -0.983838558)
+end
+
+local turkeyholder = game.Workspace.TurkeyHolder
+
+function collect()
+    for i,v in pairs(game.Workspace:GetChildren()) do
+        if v.Name:find("Orb") then
+            game.Players.LocalPlayer.Character.Torso.CFrame = v.InnerOrb.CFrame
+        end
+    end
+    for i = 1,6 do
+        task.wait(0.35)
+        randomTurkey = turkeyholder:GetChildren()[math.random(1,#turkeyholder:GetChildren())]
+        if randomTurkey then
+            game.Players.LocalPlayer.Character.Torso.CFrame = randomTurkey.Base.CFrame
+        end
+    end
+    spawnback()
+    task.wait(0.15)
+    if Workspace.Muzak.Hunt.Playing then
+        collect()
+    else
+        warn("Game Not In Progress - Stopping Script (Use again when started)")
+    end
+end
+
+collect()
