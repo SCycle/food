@@ -2,7 +2,7 @@ local tweenService = game:GetService("TweenService")
 local t0 = tweenService:Create(game.Players.LocalPlayer.Character.HumanoidRootPart, TweenInfo.new(0.45), {CFrame = CFrame.new(-12.800519, 1029.54346, 186.594467, -0.762762129, 0.102616362, -0.638485491, -0.00617364096, 0.986129165, 0.165864468, 0.646649599, 0.13045688, -0.751548529)}) 
 t0:Play()
 
-t0.Completed:Wait()
+t0.Completed:wait()
 
 while _G.LevelFarm do
     for i,v in pairs(_G.MoveList) do
