@@ -5,8 +5,8 @@ t0:Play()
 t0.Completed:Wait()
 
 while _G.LevelFarm do
-    for i,v in pairs(MoveList) do
+    for i,v in pairs(_G.MoveList) do
         task.wait(0.15)
-        game:GetService("ReplicatedStorage").Replicator:InvokeServer(YourFruit, v, {})
+        game:GetService("ReplicatedStorage").Replicator:InvokeServer(_G.YourFruit, v, {})
     end
 end
