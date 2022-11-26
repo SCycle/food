@@ -5,6 +5,11 @@ t0:Play()
 while _G.LevelFarm do
     for i,v in pairs(_G.MoveList) do
         task.wait(0.15)
-        game:GetService("ReplicatedStorage").Replicator:InvokeServer(_G.YourFruit, v, {})
+        if v:find(" ") then
+            l = table.split(v," ")
+            game:GetService("ReplicatedStorage").Replicator:InvokeServer(_G.YourFruit, l[1], l[2], {})
+        else
+            game:GetService("ReplicatedStorage").Replicator:InvokeServer(_G.YourFruit, v, {})
+        end
     end
 end
