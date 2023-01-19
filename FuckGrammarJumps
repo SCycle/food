@@ -92,7 +92,7 @@ local info = {"One.","Two.","Three.","Four.","Five.","Six.","Seven.","Eight.","N
 
 task.wait(0.25)
 
-for i = 1,grammarJumps do
+for i = 1,_G.grammarJumps do
     local message = info[i]
     game.ReplicatedStorage.DefaultChatSystemChatEvents.SayMessageRequest:FireServer(message,"All")
     keypress(0x20)
